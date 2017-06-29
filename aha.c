@@ -108,8 +108,8 @@ int main(int argc,char* args[])
 	char* title=NULL;
 	char word_wrap=0;
 	char no_header=0;
-	char auto_scroll=0;
-	char auto_update=0;
+	int auto_scroll=0;
+	int auto_update=0;
 	//Searching Parameters
 	for (int p = 1;p<argc;p++)
 	{
@@ -181,8 +181,10 @@ int main(int argc,char* args[])
 		else
 		if ((strcmp(args[p],"--stylesheet")==0) || (strcmp(args[p],"-s")==0))
 			stylesheet=1;
+		else
 		if (strcmp(args[p],"--auto-scroll")==0)
 			auto_scroll=1;
+		else
 		if (strcmp(args[p],"--auto-update")==0)
 		{
 			if (p+1>=argc)
@@ -337,14 +339,10 @@ int main(int argc,char* args[])
 		{
 			printf(
 				"<script type=\"text/javascript\">"
-				"  setInterval("
-				"   function () {"
-				"      console.log('here', document.body.scrollHeight);"
-				"      window.scrollTo(0, document.body.scrollHeight);"
-				"    },"
-				"    5000"
-				"  );"
-				"</script>"
+				"window.addEventListener('load', function() {\n"
+				"  setTimeout(function() { window.scrollTo(0, document.body.scrollHeight); }, 50);\n"
+				"});\n"
+				"</script>\n"
 			);
 		}
 		printf("</head>\n");
