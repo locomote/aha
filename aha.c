@@ -108,6 +108,8 @@ int main(int argc,char* args[])
 	char* title=NULL;
 	char word_wrap=0;
 	char no_header=0;
+	int auto_scroll=0;
+	int auto_update=0;
 	//Searching Parameters
 	for (int p = 1;p<argc;p++)
 	{
@@ -179,6 +181,20 @@ int main(int argc,char* args[])
 		else
 		if ((strcmp(args[p],"--stylesheet")==0) || (strcmp(args[p],"-s")==0))
 			stylesheet=1;
+		else
+		if (strcmp(args[p],"--auto-scroll")==0)
+			auto_scroll=1;
+		else
+		if (strcmp(args[p],"--auto-update")==0)
+		{
+			if (p+1>=argc)
+			{
+				fprintf(stderr,"No auto update time given!\n");
+				return 0;
+			}
+			auto_update = atoi(args[p+1]);
+			p++;
+		}
 		else
 		if ((strcmp(args[p],"--iso")==0) || (strcmp(args[p],"-i")==0))
 		{
@@ -307,6 +323,27 @@ int main(int argc,char* args[])
 		{
 			printf("<style type=\"text/css\">pre {white-space: pre-wrap; white-space: -moz-pre-wrap !important;\n");
 			printf("white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}</style>\n");
+		}
+		if (auto_update)
+		{
+			printf(
+				"<script type=\"text/javascript\">"
+				"setInterval(function () {"
+				"  location.reload();"
+				"}, %d)"
+				"</script>\n",
+				auto_update
+			);
+		}
+		if (auto_scroll)
+		{
+			printf(
+				"<script type=\"text/javascript\">"
+				"window.addEventListener('load', function() {\n"
+				"  setTimeout(function() { window.scrollTo(0, document.body.scrollHeight); }, 50);\n"
+				"});\n"
+				"</script>\n"
+			);
 		}
 		printf("</head>\n");
 		if (stylesheet || ! colorshema)
