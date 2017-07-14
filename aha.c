@@ -573,7 +573,7 @@ int main(int argc,char* args[])
 											 else if (colorshema==2)
 												 printf("color:pink;");
 											 else
-												 printf("color:white;");
+												 printf("color:gray;");
 											 break; //Background Colour
 							case	9: if (stylesheet)
 												 printf("reset ");
