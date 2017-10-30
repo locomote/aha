@@ -326,10 +326,14 @@ int main(int argc,char* args[])
 		}
 		if (auto_update)
 		{
+			// Only reload if at top or bottom of page.
+			// This makes it easier to inspect logs.
 			printf(
 				"<script type=\"text/javascript\">"
 				"setInterval(function () {"
-				"  location.reload();"
+				"  var isAtBottom = ((window.innerHeight + window.scrollY) >= document.body.offsetHeight);"
+				"  var isAtTop    = (window.scrollY === 0);"
+				"  if (isAtTop || isAtBottom) location.reload();"
 				"}, %d)"
 				"</script>\n",
 				auto_update
